@@ -17,24 +17,34 @@ var Elevator = class{
 	
 	//Move the elevator once in the direction specified
 	move(direction){
-		// A valid direction must be given
-		if (typeof direction == 'number'){
+		// A valid direction must be given and door must be closed
+		if (typeof direction == 'number' && !this._isOpen){
 			var nextFloor = this._currentFloor + direction;
 			
 			//The elevator cannot go beyond floor boundaries
-			if (nextFloor <= MAX_FLOOR && nextFloor >= MIN_FLOOR)
+			if (nextFloor <= MAX_FLOOR && nextFloor >= MIN_FLOOR && nextFloor <= this._requestedFloor && nextFloor >= this._requestedFloor)
 				this._currentFloor += direction;
 			
 			//Report the floor
 			console.log("Elevator "+this._label+" has moved to floor: "+this._currentFloor);
+		
+			//We have arrived at a floor
+			if (this._currentFloor == this._requestedFloor){
+				this._isOpen = true;
+				console.log("Elevator "+this._label+" has reached floor "+this._requestedFloor+" and is opening.");
+			}	
 		}
 	}
 	
 	//Open or close the elevator
-	pressButton(){
-		//If the door is open, close it and vice versa
-		this._isOpen = !this._isOpen; 
-		console.log("Elevator "+this._label+"'s door is open? " + this._isOpen);
+	pickFloor(floornum){
+		//The door must be open to pick a number. We'll assume the numbers become disabled when the door has closed.
+		//Also, the floor number must exist in the building
+		if (this._isOpen && floornum <= MAX_FLOOR && floornum >= MIN_FLOOR) { 
+			this._isOpen = false; 
+			console.log("Elevator "+this._label+"'s door has closed.");
+			
+		}
 	}
 }
 
@@ -47,7 +57,7 @@ for (var i=0; i<NUM_ELEVATORS; i++){
 }
 console.log("TEST");
 //Test
-elevators[0].pressButton();
+elevators[0].pickFloor();
 elevators[0].move(directionEnum.UP);
 elevators[0].move(directionEnum.UP);
 elevators[0].move(directionEnum.DOWN);
