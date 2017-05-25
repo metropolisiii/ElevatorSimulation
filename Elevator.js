@@ -8,33 +8,33 @@ const directionEnum = {
 //Elevator class	
 var Elevator = class{
 	//Constructor
-	constructor(num){
-		this._floor = MIN_FLOOR; //All elevators will start on the 1st floor
-		this._num = num; //Labels the elevator
+	constructor(label){
+		this._currentFloor = MIN_FLOOR; //All elevators will start on the 1st floor
+		this._requestedFloor; //The requestedFloor that is chosen
+		this._label = label; //Labels the elevator
 		this._isOpen = true; //When the door is closed, the elevator is moving
 	}
 	
 	//Move the elevator once in the direction specified
 	move(direction){
 		// A valid direction must be given
-		if (typeof direction != 'number')
-			return;
-		this._floor += direction;
-		
-		//Report the floor
-		console.log("Elevator "+num+" has moved to floor: "+this.floor);
+		if (typeof direction == 'number'){
+			var nextFloor = this._currentFloor + direction;
+			
+			//The elevator cannot go beyond floor boundaries
+			if (nextFloor <= MAX_FLOOR && nextFloor >= MIN_FLOOR)
+				this._currentFloor += direction;
+			
+			//Report the floor
+			console.log("Elevator "+this._label+" has moved to floor: "+this._currentFloor);
+		}
 	}
 	
 	//Open or close the elevator
-	openclose(action){
-		switch(action){
-			case 'open':
-				this._isOpen = true;
-				break;
-			case 'close':
-				this._isOpen = false;
-				break;
-		}
+	pressButton(){
+		//If the door is open, close it and vice versa
+		this._isOpen = !this._isOpen; 
+		console.log("Elevator "+this._label+"'s door is open? " + this._isOpen);
 	}
 }
 
@@ -45,3 +45,9 @@ var elevators = [];
 for (var i=0; i<NUM_ELEVATORS; i++){
 	elevators[i] = new Elevator(i);
 }
+console.log("TEST");
+//Test
+elevators[0].pressButton();
+elevators[0].move(directionEnum.UP);
+elevators[0].move(directionEnum.UP);
+elevators[0].move(directionEnum.DOWN);
