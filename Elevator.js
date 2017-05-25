@@ -52,17 +52,20 @@ var Elevator = class{
 			
 		}
 	}
-	//Calls an elevator.
-	callElevator(){
-		var closestElevator = MAX_FLOOR; //The furthest an elevator and a person can be
-		for (var i=0; i<NUM_ELEVATORS; i++){
-			if (elevators[i] != this && abs(this._currentFloor - elevators[i]._currentFloor)){ //Get the distance between the caller and the elevator. Make sure they are not one in the same.
-			}
-		}	
-		
-	}
 }
  
+//Gets the closest elevator to a person
+function getClosestElevator(floor, elevators){
+	var closestElevatorFloor = MAX_FLOOR; //The furthest an elevator and a person can be
+	var closestElevator;
+	for (var i=0; i<NUM_ELEVATORS; i++){
+		if (elevators[i]._isOpen && Math.abs(floor - elevators[i]._currentFloor) < closestElevatorFloor){ //Get the distance between the caller and the elevator. Make sure they are not one in the same.
+			closestElevatorFloor = elevators[i]._currentFloor;
+			closestElevator = i;
+		}
+	}	
+	return closestElevator;
+}
 
 //Main
 const NUM_ELEVATORS = 5;
@@ -77,4 +80,5 @@ elevators[0].pickFloor(3);
 elevators[0].move();
 elevators[0].move();
 elevators[0].move();
-elevators[0].callElevator();
+console.log(getClosestElevator(5, elevators));
+
