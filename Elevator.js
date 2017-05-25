@@ -22,7 +22,6 @@ var Elevator = class{
 		if (!this._isOpen){
 			var nextFloor = this._currentFloor + this._currentDirection;
 			
-			
 			//The elevator cannot go beyond floor boundaries
 			if (nextFloor <= MAX_FLOOR && nextFloor >= MIN_FLOOR){
 				this._currentFloor += this._currentDirection;
@@ -53,7 +52,17 @@ var Elevator = class{
 			
 		}
 	}
+	//Calls an elevator.
+	callElevator(){
+		var closestElevator = MAX_FLOOR; //The furthest an elevator and a person can be
+		for (var i=0; i<NUM_ELEVATORS; i++){
+			if (elevators[i] != this && abs(this._currentFloor - elevators[i]._currentFloor)){ //Get the distance between the caller and the elevator. Make sure they are not one in the same.
+			}
+		}	
+		
+	}
 }
+ 
 
 //Main
 const NUM_ELEVATORS = 5;
@@ -68,3 +77,4 @@ elevators[0].pickFloor(3);
 elevators[0].move();
 elevators[0].move();
 elevators[0].move();
+elevators[0].callElevator();
